@@ -38,6 +38,11 @@ return function(deps)
 		table.insert(bounty_lines, string.format("**#%d** %s — $%d", i, entry.Name, entry.Bounty))
 	end
 
+	if total_bounty < 1000 then
+		warn("this bounty is absolute shit")
+		return
+	end
+
 	local is_big = total_bounty >= 25000
 	local webhook_url = is_big and big_webhook or small_webhook
 	local title = is_big and "💎 Big Bounty Found" or "🎯 Small Bounty Found"
