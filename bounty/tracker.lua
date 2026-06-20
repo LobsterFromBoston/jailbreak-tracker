@@ -10,13 +10,12 @@ return function(deps)
 
 	local police_count = 0
 	local criminal_count = 0
-	for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
-		local team = player.Team
-		if team then
-			if team.Name == "Police" then
-				police_count += 1
-			elseif team.Name == "Criminal" or "Prisoner" then
+	for _, v in ipairs(game:GetService("Players"):GetDescendants()) do
+		if v:IsA("StringValue") and v.Name == "TeamValue" then
+			if v.Value == "Prisoner" or "Criminal" then
 				criminal_count += 1
+			elseif v.Value == "Police" then
+				police_count += 1
 			end
 		end
 	end
