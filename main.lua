@@ -54,6 +54,28 @@ bounty_tracker({
 	job_id = job_id,
 })
 
+local function get_new_server()
+	local response = request({
+		Url = "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?limit=100",
+		Method = "GET",
+	})
+	local data = http:JSONDecode(response.Body)
+
+	for _, server in pairs(data.data) do
+		if server.id ~= game.JobId and server.playing > 0 then
+			return server.id
+		end
+	end
+
+	return nil
+end
+
 task.wait(2)
 queue_on_teleport(request({ Url = REPO .. "main.lua", Method = "GET" }).Body)
-TeleportService:Teleport(game.PlaceId)
+
+local new_server = get_new_server()
+if new_server then
+	TeleportService:TeleportToPlaceInstance(game.PlaceId, new_server)
+else
+	TeleportService:Teleport(game.PlaceId)
+end
