@@ -1,20 +1,20 @@
+if not game:IsLoaded() then
+	game.Loaded:Wait()
+end
+
 local http = game:GetService("HttpService")
 local players = game:GetService("Players")
 local replicated_storage = game:GetService("ReplicatedStorage")
+local TeleportService = game:GetService("TeleportService")
 
 local REPO = "https://raw.githubusercontent.com/LobsterFromBoston/jailbreak-tracker/refs/heads/master/"
 
 local function load(path)
-	local response = request({
-		Url = REPO .. path,
-		Method = "GET",
-	})
-
+	local response = request({ Url = REPO .. path, Method = "GET" })
 	local fn, err = loadstring(response.Body)
 	if not fn then
 		error("Failed to load " .. path .. ": " .. tostring(err))
 	end
-
 	return fn()
 end
 
@@ -28,6 +28,7 @@ local bounty_tracker = load("bounty/tracker.lua")
 local job_id = game.JobId
 local player_count = #players:GetPlayers()
 local max_players = players.MaxPlayers
+local join_link = "https://www.fishstrap.app/v1/joingame?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. job_id
 
 tracker({
 	robbery_consts = require(replicated_storage.Robbery.RobberyConsts),
@@ -39,7 +40,7 @@ tracker({
 	job_id = job_id,
 	player_count = player_count,
 	max_players = max_players,
-	join_link = "https://www.fishstrap.app/v1/joingame?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. job_id,
+	join_link = join_link,
 })
 
 bounty_tracker({
@@ -47,8 +48,12 @@ bounty_tracker({
 	send_webhook = send_webhook,
 	small_webhook = webhook_map["Bounty.Small"],
 	big_webhook = webhook_map["Bounty.Big"],
-	join_link = "https://www.fishstrap.app/v1/joingame?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. job_id,
+	join_link = join_link,
 	player_count = player_count,
 	max_players = max_players,
 	job_id = job_id,
 })
+
+task.wait(2)
+queue_on_teleport(request({ Url = REPO .. "main.lua", Method = "GET" }).Body)
+TeleportService:Teleport(game.PlaceId)
