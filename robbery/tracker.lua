@@ -10,16 +10,27 @@ return function(deps)
 	local max_players = deps.max_players
 	local job_id = deps.job_id
 
+	local police_count = 0
+	local criminal_count = 0
+	for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+		local team = player.Team
+		if team then
+			if team.Name == "Police" then
+				police_count += 1
+			elseif team.Name == "Criminals" then
+				criminal_count += 1
+			end
+		end
+	end
+
 	for _, k in pairs(robbery_consts.LIST_ROBBERY) do
 		local enum = robbery_consts.ENUM_ROBBERY[k]
 		local name = robbery_consts.PRETTY_NAME[enum]
 		local state = robbery_state:FindFirstChild(tostring(enum))
-
 		if state and state:IsA("IntValue") then
 			local status = status_map.status[state.Value] or "unknown"
 			local url = webhook_map[name]
 			local ping = role_map[name] and role_map[name] ~= "" and "<@&" .. role_map[name] .. ">" or nil
-
 			if url and url ~= "" and status == "open" then
 				send_webhook(url, ping, {
 					title = "🏦 " .. name,
@@ -36,7 +47,9 @@ return function(deps)
 							value = string.format("%d/%d", player_count, max_players),
 							inline = true,
 						},
-						{ name = "🔑 Job ID", value = string.format("`%s`", job_id), inline = true },
+						{ name = "🚔 Police", value = tostring(police_count), inline = true },
+						{ name = "💰 Criminals", value = tostring(criminal_count), inline = true },
+						{ name = "🔑 Job ID", value = string.format("`%s`", job_id), inline = false },
 					},
 					footer = { text = "Robbery Tracker" },
 					timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ"),

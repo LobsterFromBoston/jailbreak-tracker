@@ -2,7 +2,7 @@ local http = game:GetService("HttpService")
 local players = game:GetService("Players")
 local replicated_storage = game:GetService("ReplicatedStorage")
 
-local REPO = "https://raw.githubusercontent.com/LobsterFromBoston/jailbreak-tracker/master/"
+local REPO = "https://raw.githubusercontent.com/LobsterFromBoston/jailbreak-tracker/refs/heads/master/"
 
 local function load(path)
 	local response = request({
@@ -22,8 +22,8 @@ local webhook_map = load("discord/webhooks.lua")
 local role_map = load("discord/roles.lua")
 local send_webhook = load("discord/send.lua")(http)
 local status_map = load("robbery/status_map.lua")
-print(type(status_map), status_map)
 local tracker = load("robbery/tracker.lua")
+local bounty_tracker = load("bounty/tracker.lua")
 
 local job_id = game.JobId
 local player_count = #players:GetPlayers()
@@ -40,4 +40,11 @@ tracker({
 	player_count = player_count,
 	max_players = max_players,
 	join_link = "roblox://experiences/start?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. job_id,
+})
+
+bounty_tracker({
+	http = http,
+	send_webhook = send_webhook,
+	small_webhook = webhook_map["Bounty.Small"],
+	big_webhook = webhook_map["Bounty.Big"],
 })

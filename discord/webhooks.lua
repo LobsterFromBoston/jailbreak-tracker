@@ -11,4 +11,8 @@ return {
 	["Crown Jewel"] = "https://discord.com/api/webhooks/1517828181690814484/M2X8mChNZCF7ALV37b5P-MXEVKeLeHVUfUF3lSNoLMj0F3BHSWpu1azvegpk6z4aeCfz",
 	["Mansion"] = "https://discord.com/api/webhooks/1517828211948388455/gkXoYdcGI3IHuFrve3vFEv-1rzpE2oVfqVYVw90DGNpql1yvFHH9j_JmayZlZeL-wiAw",
 	["Oil Rig"] = "https://discord.com/api/webhooks/1517828478483959808/Hlsj_YZLwx4bGKr_LV8LTA4aWC79sHLXeTrMdO2tiNdu3QHu6M2RTa2gWid_KEIMSJG-",
+
+	-- bounty
+	["Bounty.Small"] = "https://discord.com/api/webhooks/1517828774144770171/EEKBOX5rHKqRfYuTQq61wcDvaup6dosr0PQmflP5bxkE9BhlzKxum6W780M5Yq1AhJKJ",
+	["Bounty.Big"] = "https://discord.com/api/webhooks/1517828799964643389/q-pY0afr872TTVWXLA0cyV_zvp9b5w_rVKE8jtUK5NOWcz_rpEtEnK2jwcpULso84Ktb",
 }
