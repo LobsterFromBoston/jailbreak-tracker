@@ -67,7 +67,71 @@ local function run()
 		})
 
 		task.wait(2)
-		queue_on_teleport(request({ Url = REPO .. "main.lua", Method = "GET" }).Body)
+		local config_source = string.format(
+			[[
+            getgenv().config = {
+                webhooks = {
+                    ["Bank"] = "%s",
+                    ["Jewelry Store"] = "%s",
+                    ["Museum"] = "%s",
+                    ["Power Plant"] = "%s",
+                    ["Passenger Train"] = "%s",
+                    ["Cargo Train"] = "%s",
+                    ["Cargo Ship"] = "%s",
+                    ["Cargo Plane"] = "%s",
+                    ["Tomb"] = "%s",
+                    ["Crown Jewel"] = "%s",
+                    ["Mansion"] = "%s",
+                    ["Oil Rig"] = "%s",
+                    ["Bounty.Small"] = "%s",
+                    ["Bounty.Big"] = "%s",
+                },
+                roles = {
+                    ["Bank"] = "%s",
+                    ["Jewelry Store"] = "%s",
+                    ["Museum"] = "%s",
+                    ["Power Plant"] = "%s",
+                    ["Passenger Train"] = "%s",
+                    ["Cargo Train"] = "%s",
+                    ["Cargo Ship"] = "%s",
+                    ["Cargo Plane"] = "%s",
+                    ["Tomb"] = "%s",
+                    ["Crown Jewel"] = "%s",
+                    ["Mansion"] = "%s",
+                    ["Oil Rig"] = "%s",
+                }
+            }
+        ]],
+			config.webhooks["Bank"],
+			config.webhooks["Jewelry Store"],
+			config.webhooks["Museum"],
+			config.webhooks["Power Plant"],
+			config.webhooks["Passenger Train"],
+			config.webhooks["Cargo Train"],
+			config.webhooks["Cargo Ship"],
+			config.webhooks["Cargo Plane"],
+			config.webhooks["Tomb"],
+			config.webhooks["Crown Jewel"],
+			config.webhooks["Mansion"],
+			config.webhooks["Oil Rig"],
+			config.webhooks["Bounty.Small"],
+			config.webhooks["Bounty.Big"],
+			config.roles["Bank"],
+			config.roles["Jewelry Store"],
+			config.roles["Museum"],
+			config.roles["Power Plant"],
+			config.roles["Passenger Train"],
+			config.roles["Cargo Train"],
+			config.roles["Cargo Ship"],
+			config.roles["Cargo Plane"],
+			config.roles["Tomb"],
+			config.roles["Crown Jewel"],
+			config.roles["Mansion"],
+			config.roles["Oil Rig"]
+		)
+
+		local main_source = request({ Url = REPO .. "main.lua", Method = "GET" }).Body
+		queue_on_teleport(config_source .. "\n" .. main_source)
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/Vcsk/RobloxScripts/refs/heads/main/ServerHop.lua"))()
 	end)
 
