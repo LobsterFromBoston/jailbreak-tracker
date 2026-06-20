@@ -22,6 +22,7 @@ local webhook_map = load("discord/webhooks.lua")
 local role_map = load("discord/roles.lua")
 local send_webhook = load("discord/send.lua")(http)
 local status_map = load("robbery/status_map.lua")
+print(type(status_map), status_map)
 local tracker = load("robbery/tracker.lua")
 
 local job_id = game.JobId
