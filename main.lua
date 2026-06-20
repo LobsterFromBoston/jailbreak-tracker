@@ -1,11 +1,21 @@
-if not game:IsLoaded() then
-	game.Loaded:Wait()
-end
-
 local http = game:GetService("HttpService")
 local players = game:GetService("Players")
 local replicated_storage = game:GetService("ReplicatedStorage")
 local TeleportService = game:GetService("TeleportService")
+
+if not game:IsLoaded() then
+	game.Loaded:Wait()
+end
+local local_player = players.LocalPlayer
+if not local_player.Character then
+	local_player.CharacterAdded:Wait()
+end
+task.wait(3)
+
+local config = getgenv().config
+if not config then
+	error("config not set! please set getgenv().config before running.")
+end
 
 local REPO = "https://raw.githubusercontent.com/LobsterFromBoston/jailbreak-tracker/refs/heads/master/"
 
@@ -18,8 +28,6 @@ local function load(path)
 	return fn()
 end
 
-local webhook_map = load("discord/webhooks.lua")
-local role_map = load("discord/roles.lua")
 local send_webhook = load("discord/send.lua")(http)
 local status_map = load("robbery/status_map.lua")
 local tracker = load("robbery/tracker.lua")
@@ -34,8 +42,8 @@ tracker({
 	robbery_consts = require(replicated_storage.Robbery.RobberyConsts),
 	robbery_state = replicated_storage:WaitForChild("RobberyState"),
 	status_map = status_map,
-	webhook_map = webhook_map,
-	role_map = role_map,
+	webhook_map = config.webhooks,
+	role_map = config.roles,
 	send_webhook = send_webhook,
 	job_id = job_id,
 	player_count = player_count,
@@ -46,8 +54,8 @@ tracker({
 bounty_tracker({
 	http = http,
 	send_webhook = send_webhook,
-	small_webhook = webhook_map["Bounty.Small"],
-	big_webhook = webhook_map["Bounty.Big"],
+	small_webhook = config.webhooks["Bounty.Small"],
+	big_webhook = config.webhooks["Bounty.Big"],
 	join_link = join_link,
 	player_count = player_count,
 	max_players = max_players,
