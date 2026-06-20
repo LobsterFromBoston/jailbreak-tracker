@@ -47,4 +47,8 @@ bounty_tracker({
 	send_webhook = send_webhook,
 	small_webhook = webhook_map["Bounty.Small"],
 	big_webhook = webhook_map["Bounty.Big"],
+	join_link = "https://www.fishstrap.app/v1/joingame?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. job_id,
+	player_count = player_count,
+	max_players = max_players,
+	job_id = job_id,
 })
