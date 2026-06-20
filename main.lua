@@ -39,7 +39,7 @@ tracker({
 	job_id = job_id,
 	player_count = player_count,
 	max_players = max_players,
-	join_link = "roblox://experiences/start?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. job_id,
+	join_link = "https://www.fishstrap.app/v1/joingame?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. job_id,
 })
 
 bounty_tracker({
