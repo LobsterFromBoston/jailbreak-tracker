@@ -15,7 +15,7 @@ return function(deps)
 		if team then
 			if team.Name == "Police" then
 				police_count += 1
-			elseif team.Name == "Criminals" then
+			elseif team.Name == "Criminal" or "Prisoner" then
 				criminal_count += 1
 			end
 		end
