@@ -32,27 +32,12 @@ return function(deps)
 		return
 	end
 
-	local fields = {}
 	local total_bounty = 0
-
+	local bounty_lines = {}
 	for i, entry in ipairs(bounty_data) do
 		total_bounty += entry.Bounty
-		table.insert(fields, {
-			name = string.format("#%d %s", i, entry.Name),
-			value = string.format("💰 $%d", entry.Bounty),
-			inline = true,
-		})
+		table.insert(bounty_lines, string.format("**#%d** %s — $%d", i, entry.Name, entry.Bounty))
 	end
-
-	table.insert(fields, { name = "\u{200B}", value = "\u{200B}", inline = false })
-
-	table.insert(
-		fields,
-		{ name = "👥 Players", value = string.format("%d/%d", player_count, max_players), inline = true }
-	)
-	table.insert(fields, { name = "🚔 Police", value = tostring(police_count), inline = true })
-	table.insert(fields, { name = "💰 Criminals", value = tostring(criminal_count), inline = true })
-	table.insert(fields, { name = "🔑 Job ID", value = string.format("`%s`", job_id), inline = false })
 
 	local is_big = total_bounty >= 25000
 	local webhook_url = is_big and big_webhook or small_webhook
@@ -61,9 +46,19 @@ return function(deps)
 
 	send_webhook(webhook_url, nil, {
 		title = title,
-		description = string.format("Total bounty: **$%d**\n\n[🔗 Click to Join](%s)", total_bounty, join_link),
+		description = string.format(
+			"Total bounty: **$%d**\n\n%s\n\n[🔗 Click to Join](%s)",
+			total_bounty,
+			table.concat(bounty_lines, "\n"),
+			join_link
+		),
 		color = color,
-		fields = fields,
+		fields = {
+			{ name = "👥 Players", value = string.format("%d/%d", player_count, max_players), inline = true },
+			{ name = "🚔 Police", value = tostring(police_count), inline = true },
+			{ name = "💰 Criminals", value = tostring(criminal_count), inline = true },
+			{ name = "🔑 Job ID", value = string.format("`%s`", job_id), inline = false },
+		},
 		footer = { text = "Bounty Tracker" },
 		timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ"),
 	})
